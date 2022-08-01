@@ -1,0 +1,7 @@
+.nav ul {
+  display: inline-block;
+  color: white;
+  background-color: rgb(167, 102, 102);
+  border-radius: 50px;
+  padding: 15px;
+}

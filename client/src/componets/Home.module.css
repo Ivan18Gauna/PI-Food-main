@@ -1,0 +1,25 @@
+.divNav ul{
+   margin: 0;
+   padding: 0;
+}
+.divNav ul li{
+    display: inline-block;
+    padding: 10px 60px;
+}
+.loading p{
+color: white;
+}
+.create{
+    border-radius: 20px;
+    background-color: rgb(224, 196, 196);
+    margin: 40px;
+    padding: 10px;
+}
+.create:hover{
+    background-color:rgb(255, 255, 255);
+    color: rgb(169, 28, 28);
+}
+.cards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
