@@ -205,9 +205,4 @@ router.delete("/delete", async (req, res) => {
   res.send(filter);
 });
 
-router.get("/x", async (req, res) => {
-  const db = await getDbInfo();
-  
-  res.send(db);
-});
 module.exports = router;
