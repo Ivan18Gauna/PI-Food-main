@@ -3,14 +3,33 @@ import { post, diets } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./CreateRecipes.module.css";
 
+function validate(input) {
+  var error = {};
+  if (!input.name) {
+    error.name = "el campo nombre es obligatorio";
+  }
+  if (!input.summary) {
+    error.summary = "el campo summary es obligatorio";
+  }
+  if (!input.healthScore) {
+    error.healthScore = "el campo healthScore es obligatorio";
+  }
+  if (!input.step) {
+    error.step = "el campo step es obligatorio";
+  }
+  return error;
+}
+
 export default function Create() {
   const dispatch = useDispatch();
+
+  const [error, setError] = useState({});
 
   const [input, setInput] = useState({
     name: "",
     summary: "",
     healthScore: "",
-    steps: [],
+    step: "",
     diet: [],
   });
 
@@ -19,6 +38,12 @@ export default function Create() {
       ...input,
       [e.target.name]: e.target.value,
     });
+    setError(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   }
 
   function handleSelect(e) {
@@ -33,8 +58,14 @@ export default function Create() {
   function handleSteps(e) {
     setInput({
       ...input,
-      steps: [...input.steps, e.target.value],
+      step: e.target.value,
     });
+    setError(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   }
 
   function handleDelete(di) {
@@ -46,19 +77,21 @@ export default function Create() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(input.step);
     dispatch(post(input));
     alert("la receta fue creada con exito");
     setInput({
       name: "",
-    summary: "",
-    healthScore: "",
-    steps: [],
-    diet: [],
+      summary: "",
+      healthScore: "",
+      step: "",
+      diet: [],
     });
   }
+  // { name, summary, healthScore, step, diet }
   useEffect(() => {
-      dispatch(diets());
-  },[dispatch]);
+    dispatch(diets());
+  }, [dispatch]);
 
   return (
     <div className={styles.conteiner}>
@@ -66,26 +99,34 @@ export default function Create() {
       <br />
       <br />
       <form onSubmit={(e) => handleSubmit(e)}>
-        <label>Nombre</label>
-        <br />
-        <input
-          type="text"
-          value={input.name}
-          name="name"
-          onChange={(e) => handleChange(e)}
-        />
-        <br />
-        <br />
-        <label>Resumen del plato</label>
-        <br />
-        <input
-          type="text"
-          value={input.summary}
-          name="summary"
-          onChange={(e) => handleChange(e)}
-        />
+        <div>
+          <label>Nombre</label>
+          <br />
+          <input
+            type="text"
+            value={input.name}
+            name="name"
+            onChange={(e) => handleChange(e)}
+          />
+          {error.name && <p className={styles.error}>{error.name}</p>}
+        </div>
         <br />
         <br />
+        <div>
+          <label>Resumen del plato</label>
+          <br />
+          <input
+            type="text"
+            value={input.summary}
+            name="summary"
+            onChange={(e) => handleChange(e)}
+          />
+          {error.summary && <p className={styles.error}>{error.summary}</p>}
+          <br />
+        </div>
+        <br />
+        <br />
+        <div>
         <label>Nivel de comdida saludable</label>
         <br />
         <input
@@ -94,16 +135,23 @@ export default function Create() {
           name="healthScore"
           onChange={(e) => handleChange(e)}
         />
+      {error.healthScore && <p className={styles.error}>{error.healthScore}</p>}
+        </div>
         <br />
         <br />
+        <div>
         <label>Paso a paso</label>
         <br />
         <input
           type="text"
-          value={input.steps}
-          name="steps"
+          value={input.step}
+          name="step"
           onChange={(e) => handleSteps(e)}
         />
+        {error.step && <p className={styles.error}>{error.step}</p>}
+        </div>
+        <br />
+        <br />
         <br />
         <br />
         <select onChange={(e) => handleSelect(e)}>

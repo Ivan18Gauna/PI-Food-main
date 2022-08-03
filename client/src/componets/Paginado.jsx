@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Paginado.module.css";
 
-export default function Paginado({ recipesPerPage, allRecipes, paginado }) {
-  const pageNambers = [];
+// export default function Paginado({ recipesPerPage, allRecipes, paginado }) {
+export default function Paginado({ pagina, setPagina, maximo }) {
+  const [input, setInput] = useState(1);
 
-  for (let i = 1; i < Math.ceil(allRecipes / recipesPerPage); i++) {
-    pageNambers.push(i);
-  }
-
+  const next = () => {
+    if(input < Math.ceil(maximo)){
+      setInput(input + 1);
+      setPagina(pagina + 1);
+    }
+  };
+  const prev = () => {
+    if(input > 1){
+    setInput(input - 1);
+    setPagina(pagina - 1);
+    }
+  };
   return (
-    <nav className={styles.nav}>
-      {pageNambers &&
-        pageNambers.map((n) => {
-          return (
-            <ul key={n}>
-              <a onClick={()=>{paginado(n);}}>{n}</a>
-            </ul>
-          );
-        })}
-    </nav>
+    <div>
+      <button onClick={()=>prev()} className={styles.btn}>prev</button>
+      <button>{input}</button>
+      <button onClick={()=>next()} className={styles.btn}>next</button>
+    </div>
   );
 }

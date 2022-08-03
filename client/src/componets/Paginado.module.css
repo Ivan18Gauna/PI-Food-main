@@ -5,3 +5,15 @@
   border-radius: 50px;
   padding: 15px;
 }
+
+.btn{
+  padding: 8px;
+  margin: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn:hover{
+  background-color: rgb(255, 0, 0);
+}

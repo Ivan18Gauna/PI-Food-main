@@ -77,16 +77,7 @@ router.get("/recipes/:id", async (req, res) => {
     : res.status(404).send(`el id:${id} no existe`);
 });
 router.get("/diets", async (req, res) => {
-  // const info = await getAllRecipes();
-  // const map = info.map((el) => el.diets);
-  // const flat = map.flat();
-  // var newArr = [];
-  // for (i = 0; i < flat.length; i++) {
-  //   if (!newArr.includes(flat[i])) {
-  //     newArr.push(flat[i]);
-  //   }
-  // }
-  var newArr = [
+  const newArr = [
     "gluten free",
     "dairy free",
     "lacto ovo vegetarian",
@@ -99,26 +90,28 @@ router.get("/diets", async (req, res) => {
     "ketogenic",
     "fodmap friendly",
   ];
+  
   newArr.forEach((el) => {
     Diet.findOrCreate({
       where: { name: el },
-    });
-  });
-  const allDiet = await Diet.findAll();
-  res.status(200).send(newArr);
+    })
+  })
+  const allDiets = await Diet.findAll();
+  res.status(200).send(allDiets);
 });
 router.post("/recipes", async (req, res) => {
-  const { name, summary, healthScore, steps, diets } = req.body;
+  const { name, summary, healthScore, step, diet, image } = req.body;
 
   const recipeCreate = await Recipe.create({
     name,
     summary,
     healthScore,
-    steps,
+    step,
+    image,
   });
 
   const dietDb = await Diet.findAll({
-    where: { name: diets },
+    where: { name: diet },
   });
 
   recipeCreate.addDiet(dietDb);
@@ -129,13 +122,13 @@ router.get("/allrecipes", async (req, res) => {
   const allRecipes = await getAllRecipes();
   const map = allRecipes.map((el) => {
     return {
-      steps: el.steps[0],
+      steps: el.steps?el.steps:el.step,
       name: el.name,
       id: el.id,
       image: el.image,
       healthScore: el.healthScore,
       dishTypes: el.dishTypes,
-      diets: el.diets,
+      diets: el.diets?el.diets:el.diet,
       summary: el.summary,
     };
   });
@@ -212,5 +205,9 @@ router.delete("/delete", async (req, res) => {
   res.send(filter);
 });
 
-
+router.get("/x", async (req, res) => {
+  const db = await getDbInfo();
+  
+  res.send(db);
+});
 module.exports = router;

@@ -4,8 +4,15 @@
     margin-top: 100px;
     border-radius: 50px;
     overflow: hidden;
-    background-color: rgba(40, 170, 172, 0.545);
+    background-color: rgba(0, 0, 0, 0.611);
     box-shadow: 10px 10px 1000px rgb(11, 1, 1);
     color: white;
   }
   
+  .error{
+    color: red;
+  }
+
+  .ok{
+    color: green;
+  }

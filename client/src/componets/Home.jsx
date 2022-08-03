@@ -15,15 +15,12 @@ export default function Home() {
   const allRecipes = useSelector((state) => state.recipes);
 
   //paginado
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recipesPerPage, setRecipesPerPage] = useState(9);
-  const lastRecipes = currentPage * recipesPerPage;
-  const firstRecipes = lastRecipes - recipesPerPage;
-  const currentRecipes = allRecipes.slice(firstRecipes, lastRecipes);
+  const [pagina,setPagina] = useState(1)
+  const [porPagina,setPorPagina] = useState(9)
 
-  const paginado = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const maximo = allRecipes.length/ porPagina
+
+  
   /////////
 
   useEffect(() => {
@@ -53,16 +50,18 @@ export default function Home() {
         </ul>
       </div>
       <div className={styles.cards}>
-        {currentRecipes.length > 0 ? (
-          currentRecipes.map((el) => {
+        {allRecipes.length > 0 ? (
+          allRecipes.slice((pagina-1)*porPagina,(pagina-1)*porPagina+porPagina).map((el) => {
             return (
               <Link to={"/details/" + el.id}>
                 <Card
                   name={el.name}
-                  image={el.image}
-                  diets={
-                    el.diets ? el.diets : el.diet.flat().map((x) => x.name)
+                  image={
+                    el.image
+                      ? el.image
+                      : "https://st2.depositphotos.com/3682225/7526/v/950/depositphotos_75266221-stock-illustration-hot-meal-cup-steamy-bowl.jpg"
                   }
+                  diets={typeof(el.id) === 'number' ? el.diets : el.diets.map(x=>x.name)}
                   key={el.id}
                 />
               </Link>
@@ -76,9 +75,9 @@ export default function Home() {
       </div>
       <div>
         <Paginado
-          recipesPerPage={recipesPerPage}
-          allRecipes={allRecipes.length}
-          paginado={paginado}
+          pagina={pagina}
+          setPagina={setPagina}
+          maximo={maximo}
         />
       </div>
     </div>
