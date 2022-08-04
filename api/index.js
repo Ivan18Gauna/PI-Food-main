@@ -20,6 +20,9 @@
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 
+//////
+require('dotenv').config();
+//////
 
 
 // Syncing all the models at once.
