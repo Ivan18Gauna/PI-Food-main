@@ -11,7 +11,7 @@ const cors = require("cors");
 
 server.name = "API";
 
-express.server.use(cors());
+express.use(cors());
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
